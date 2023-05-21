@@ -36,6 +36,7 @@ void AHoldemCardDeckBase::Tick(float DeltaTime)
 
 }
 
+//ì¹´ë“œ ìŠ¤í° ì´í›„ ì›€ì§ì´ê²Œ í•˜ëŠ” í•¨ìˆ˜
 AHoldemCardBase* AHoldemCardDeckBase::SpawnCardAndMove(FTransform CardTrans, const FCard CardInfo, bool CanSee, bool CanClick)
 {
 	AHoldemCardBase* TempCard = nullptr;
@@ -45,34 +46,34 @@ AHoldemCardBase* AHoldemCardDeckBase::SpawnCardAndMove(FTransform CardTrans, con
 		FVector SpawnLoc = CardSpawnLoc->GetComponentLocation();
 		FRotator SpawnRot = CardTrans.Rotator();
 
-		//Ä«µå ½ºÆù
+		//ì¹´ë“œ ìŠ¤í°
 		TempCard = GetWorld()->SpawnActor<AHoldemCardBase>(HoldemCardClass, SpawnLoc, SpawnRot);
 		if (TempCard)
 		{
-			//½ºÆùÇÑ Ä«µå ÀúÀå
+			//ìŠ¤í°í•œ ì¹´ë“œ ì €ìž¥
 			SpawnedCardArray.Add(TempCard);
 
-			//µÚÁýÇô¼­ ½ºÆù
+			//ë’¤ì§‘í˜€ì„œ ìŠ¤í°
 			if (SpawnRot.Roll > 1.f || SpawnRot.Roll < -1.f)
 			{
 				TempCard->IsRotate = true;
 				NHLOG_WARNING(TEXT("IsRotate is true"));
 			}
 
-			//Å¬¸¯, º¸ÀÌ±â º¯¼ö ¼³Á¤
+			//í´ë¦­, ë³´ì´ê¸° ë³€ìˆ˜ ì„¤ì •
 			TempCard->SetCanClickAndSeeCard(CanSee, CanClick);
 
-			//Ä«µå ¼ýÀÚ ¹®ÀÚ ¼³Á¤
+			//ì¹´ë“œ ìˆ«ìž ë¬¸ìž ì„¤ì •
 			TempCard->SetCardTexture(CardInfo);
 
-			//¸ñÇ¥ À§Ä¡ ¼³Á¤
+			//ëª©í‘œ ìœ„ì¹˜ ì„¤ì •
 			TempCard->SetSplineEndPoint_CPP(CardTrans.GetLocation());
 
-			//Ä«µå ½ºÄÉÀÏ ¼³Á¤
+			//ì¹´ë“œ ìŠ¤ì¼€ì¼ ì„¤ì •
 			TempCard->SetCardScale(CardTrans);
 
-			//¿òÁ÷ÀÌ±â
-			TempCard->MoveCard_CPP(false, 4.f, 0); //0926 ¼Óµµ ¼öÁ¤ (°ÇÈ£)
+			//ì›€ì§ì´ê¸°
+			TempCard->MoveCard_CPP(false, 4.f, 0); 
 
 			return TempCard;
 		}
@@ -133,26 +134,26 @@ FCard AHoldemCardDeckBase::GetDeckTopCard()
 {
 	FCard tempCard;
 	tempCard = deck[0];
-	deck.RemoveAt(0); //µ¦ ¸Ç À­ Ä«µå¸¦ »èÁ¦ÇÏµµ·Ï ¼³Á¤. ÇÊ¿ä ¾øÀ»½Ã ÁÖ¼®Ã³¸®
+	deck.RemoveAt(0); //ë± ë§¨ ìœ— ì¹´ë“œë¥¼ ì‚­ì œí•˜ë„ë¡ ì„¤ì •. í•„ìš” ì—†ì„ì‹œ ì£¼ì„ì²˜ë¦¬
 
 	NHLOG_WARNING(TEXT("%d %s, "), tempCard.CardPower, *NHDataBase::GetEnumNameToString(tempCard.CardSuit));
 
-	//return deck.Pop(); //µ¦ÀÇ ¸¶Áö¸· ÀÎµ¦½º¸¦ ¹ÝÈ¯ÇÏ·Á¸é ÁÖ¼® ÇØÁ¦.
-	return tempCard; //µ¦ÀÇ Ã¹¹øÂ° ÀÎµ¦½º »èÁ¦ ÈÄ ¹ÝÈ¯
+	//return deck.Pop(); //ë±ì˜ ë§ˆì§€ë§‰ ì¸ë±ìŠ¤ë¥¼ ë°˜í™˜í•˜ë ¤ë©´ ì£¼ì„ í•´ì œ.
+	return tempCard; //ë±ì˜ ì²«ë²ˆì§¸ ì¸ë±ìŠ¤ ì‚­ì œ í›„ ë°˜í™˜
 }
 
 void AHoldemCardDeckBase::RotateAllSpawnCard()
 {
 	for (auto Elem : SpawnedCardArray)
 	{
-		//½ºÆùÇÑ ¸ðµç Ä«µå µÚÁý±â
+		//ìŠ¤í°í•œ ëª¨ë“  ì¹´ë“œ ë’¤ì§‘ê¸°
 		Elem->CardRotate();
 	}
 }
 
 void AHoldemCardDeckBase::DestroyAllSpawnCard()
 {
-	//¸ðµç Ä«µå Á¦°Å
+	//ëª¨ë“  ì¹´ë“œ ì œê±°
 	for (auto Elem : SpawnedCardArray)
 	{
 		Elem->Destroy();
