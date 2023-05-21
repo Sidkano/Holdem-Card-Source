@@ -82,10 +82,10 @@ AHoldemCardBase* AHoldemCardDeckBase::SpawnCardAndMove(FTransform CardTrans, con
 	return TempCard;
 }
 
-void AHoldemCardDeckBase::InitializeDeck()
+void AHoldemCardDeckBase::InitializeDeck() // 덱 초기화 시 설정
 {
 	FCard card;
-	deck.Empty();
+	deck.Empty(); // 덱에 카드가 없는지 확인
 
 	for (int i = 0; i < 4; i++)
 	{
